@@ -1,7 +1,7 @@
 SRC=ram.c mem.c fileIO.c util.c GPIO.c
 EXE=ram
-EXTRACFLAGS=-lm
-EXTRALDFLAGS=-lm 
+EXTRACFLAGS=-lm -lpthread
+EXTRALDFLAGS=-lm -lpthread
 export SRC
 export EXE
 export EXTRACFLAGS

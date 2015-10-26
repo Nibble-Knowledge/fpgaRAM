@@ -27,7 +27,11 @@ int main(void){
 	initGPIOs();
 	initMem();
 
-	if(fork()){
+	pthread_t tid;
+
+	pthread_create(&tid, NULL, memThread, NULL);
+
+//	if(fork()){
 
 	while(run){
 
@@ -59,15 +63,39 @@ int main(void){
 
 
 	}
-	}
+//	}
 
-	else{
-		while(run){
-			if (GET_GPIO(WE))
-				writeDataToMem(readAddress());
-			else
-				readDataFromMem(readAddress());
-		}
-	}
+//	else{
+
+//		while(1){
+		//	puts("reading...");
+//			if (GET_GPIO(WE)){
+		//		printf("WE = 1 Address %hu", readAddress());
+//				writeDataToMem(readAddress());
+			//	sleep(5);
+//			}
+//			else{
+//				readDataFromMem(readAddress());
+		//		printf("WE = 0 Address %hu", readAddress());
+		//		sleep(5);
+//			}
+//		}
+//	}
 
 }
+
+
+
+void* memThread(void* input){
+
+	while(1){
+		if(GET_GPIO(WE)){
+			writeDataToMem(readAddress());
+		}
+		else
+			readDataFromMem(readAddress());
+	}
+
+
+}
+

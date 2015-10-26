@@ -23,7 +23,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <pthread.h>
-
+#include <math.h>
 
 #define IOMEM 3
 #define BOOTMEM 1024
@@ -89,7 +89,7 @@ typedef struct _nibble{
 
 // Global Variables
 
-extern nibble*	MAINMEM;
+//extern static nibble*	MAINMEM;
 
 extern int  mem_fd;
 extern void *gpio_map;
@@ -97,6 +97,28 @@ extern void *gpio_map;
 // I/O access
 extern volatile unsigned *gpio;
 
+
+
+// mem.c Prototypes
+// ------------------------------------------------//
+
+//Initialize Memory
+int initMem(void);
+
+
+nibble readMem(uint16_t);
+
+//Stores data into memory
+void writeMem(nibble data, uint16_t address);
+
+//Prints all of Memory
+void printMem(uint16_t, uint16_t);
+
+//Frees Memory allocation
+void freeMem(void);
+
+//Sets data table values for 1 to 15
+void setBoot(void);
 
 
 
@@ -129,5 +151,6 @@ void readDataFromMem(uint16_t);
 
 void writeDataToMem(uint16_t);
 
+void* memThread(void*);
 
 #endif

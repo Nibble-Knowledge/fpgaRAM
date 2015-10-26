@@ -70,7 +70,7 @@ int readWE(void){
 }
 
 uint16_t readAddress(void){
-	unsigned int address = 0;
+	uint16_t address = 0;
 	if(GET_GPIO(A0))
 		address |= 0x1;
 	else
@@ -169,7 +169,7 @@ void writeDataToMem(uint16_t address){
 
 
 void readDataFromMem(uint16_t address){
-	nibble data = readMem(uint16_t)
+	nibble data = readMem(address);
 	OUT_GPIO(D0);
 	OUT_GPIO(D1);
 	OUT_GPIO(D2);

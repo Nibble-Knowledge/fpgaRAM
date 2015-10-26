@@ -1,7 +1,7 @@
 
 #include "ram.h"
 
-nibble *MAINMEM = NULL;
+static nibble *MAINMEM = NULL;
 
 // Initailize Memory Function
 int initMem(void)
