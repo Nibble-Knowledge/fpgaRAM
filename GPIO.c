@@ -140,4 +140,60 @@ unsigned int readAddress(void){
 		
 }
 
+void writeDataToMem(uint16_t address){
+	nibble data;
+	INP_GPIO(D0);
+	INP_GPIO(D1);
+	INP_GPIO(D2);
+	INP_GPIO(D3);
+	
+	if(GET_GPIO(D0))
+		data.data |= 0x1;
+	else
+		data.data &= 0xE;
+	if(GET_GPIO(D1))
+		data.data |= 0x2;
+	else
+		data.data &= 0xD;		
+	if(GET_GPIO(D2))
+		data.data |= 0x4;
+	else
+		data.data &= 0xB;
+	if(GET_GPIO(D3))
+		data.data |= 0x8;
+	else
+		data.data &= 0x7;
+	
+	writeMem(data, address);
+}
+
+
+void readDataFromMem(uint16_t address){
+	nibble data = readMem(uint16_t)
+	OUT_GPIO(D0);
+	OUT_GPIO(D1);
+	OUT_GPIO(D2);
+	OUT_GPIO(D3);
+	
+	if(data.data & 0x8)
+		GPIO_SET = 1 << D3;
+	else
+		GPIO_CLR = 1 << D3;
+		
+	if(data.data & 0x4)
+		GPIO_SET = 1 << D2;
+	else
+		GPIO_CLR = 1 << D2;
+		
+	if(data.data & 0x2)
+		GPIO_SET = 1 << D1;
+	else
+		GPIO_CLR = 1 << D1;
+		
+	if(data.data & 0x1)
+		GPIO_SET = 1 << D0;
+	else
+		GPIO_CLR = 1 << D0;
+	
+}
 
