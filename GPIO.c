@@ -38,47 +38,106 @@ void setup_io()
 
 
 void initGPIOs(void){
-	INP_GPIO(CLKPIN);
-	OUT_GPIO(CLKPIN);
-	INP_GPIO(P0);
-	OUT_GPIO(P0);
-	INP_GPIO(P1);
-	OUT_GPIO(P1);
-	INP_GPIO(P2);
-	OUT_GPIO(P2);
-	INP_GPIO(P3);
-	OUT_GPIO(P3);
-	INP_GPIO(P4);
-	OUT_GPIO(P4);
-	INP_GPIO(P5);
-	OUT_GPIO(P5);
-	INP_GPIO(P6);
-	OUT_GPIO(P6);
-	INP_GPIO(P7);
-	OUT_GPIO(P7);
-	INP_GPIO(P8);
-	OUT_GPIO(P8);
-	INP_GPIO(P9);
-	OUT_GPIO(P9);
-	INP_GPIO(P10);
-	OUT_GPIO(P10);
-	INP_GPIO(P11);
-	OUT_GPIO(P11);
+	INP_GPIO(WE);
+	INP_GPIO(A0);
+	INP_GPIO(A1);
+	INP_GPIO(A2);
+	INP_GPIO(A3);
+	INP_GPIO(A4);
+	INP_GPIO(A5);
+	INP_GPIO(A6);
+	INP_GPIO(A7);
+	INP_GPIO(A8);
+	INP_GPIO(A9);
+	INP_GPIO(A10);
+	INP_GPIO(A11);
+	INP_GPIO(A12);
+	INP_GPIO(A13);
+	INP_GPIO(A14);
+	INP_GPIO(A15);
+	INP_GPIO(D0);
+	INP_GPIO(D1);
+	INP_GPIO(D2);
+	INP_GPIO(D3);
+	
+}
 
-	//Turn them all off
-	GPIO_CLR = 1 << CLKPIN;
-	GPIO_CLR = 1 << P0;
-	GPIO_CLR = 1 << P1;
-	GPIO_CLR = 1 << P2;
-	GPIO_CLR = 1 << P3;
-	GPIO_CLR = 1 << P4;
-	GPIO_CLR = 1 << P5;
-	GPIO_CLR = 1 << P6;
-	GPIO_CLR = 1 << P7;
-	GPIO_CLR = 1 << P8;
-	GPIO_CLR = 1 << P9;
-	GPIO_CLR = 1 << P10;
-	GPIO_CLR = 1 << P11;
+int readWE(void){
+	if(GET_GPIO(WE))
+		return 1;
+	else
+		return 0;
+}
+
+unsigned int readAddress(void){
+	unsigned int address = 0;
+	if(GET_GPIO(A0))
+		address |= 0x1;
+	else
+		address &= 0xFFFE;
+	if(GET_GPIO(A1))
+		address |= 0x2;
+	else
+		address &= 0xFFFD;
+	if(GET_GPIO(A2))
+		address |= 0x4;
+	else
+		address &= 0xFFFB;
+	if(GET_GPIO(A3))
+		address |= 0x8;
+	else
+		address &= 0xFFF7;
+	if(GET_GPIO(A4))
+		address |= 0x10;
+	else
+		address &= 0xFFEF;
+	if(GET_GPIO(A5))
+		address |= 0x20;
+	else
+		address &= 0xFFDF;
+	if(GET_GPIO(A6))
+		address |= 0x40;
+	else
+		address &= 0xFFBF;
+	if(GET_GPIO(A7))
+		address |= 0x80;
+	else
+		address &= 0xFF7F;
+	if(GET_GPIO(A8))
+		address |= 0x100;
+	else
+		address &= 0xFEFF;
+	if(GET_GPIO(A9))
+		address |= 0x200;
+	else
+		address &= 0xFDFF;
+	if(GET_GPIO(A10))
+		address |= 0x400;
+	else
+		address &= 0xFBFF;
+	if(GET_GPIO(A11))
+		address |= 0x800;
+	else
+		address &= 0xF7FF;
+	if(GET_GPIO(A12))
+		address |= 0x1000;
+	else
+		address &= 0xEFFF;
+	if(GET_GPIO(A13))
+		address |= 0x2000;
+	else
+		address &= 0xDFFF;		
+	if(GET_GPIO(A14))
+		address |= 0x4000;
+	else
+		address &= 0xBFFF;
+	if(GET_GPIO(A15))
+		address |= 0x8000;
+	else
+		address &= 0x7FFF;
+	
+	return address;
+		
 }
 
 
