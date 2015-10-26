@@ -64,9 +64,9 @@ int main(void){
 	else{
 		while(run){
 			if (GET_GPIO(WE))
-				writeDataToMem(getAddress());
+				writeDataToMem(readAddress());
 			else
-				readDataFromMem(getAddress());
+				readDataFromMem(readAddress());
 		}
 	}
 
