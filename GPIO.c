@@ -69,7 +69,7 @@ int readWE(void){
 		return 0;
 }
 
-unsigned int readAddress(void){
+uint16_t readAddress(void){
 	unsigned int address = 0;
 	if(GET_GPIO(A0))
 		address |= 0x1;
