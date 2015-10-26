@@ -62,9 +62,11 @@ int main(void){
 	}
 
 	else{
-		while(1){
-			puts("Other thread");
-			sleep(5);
+		while(run){
+			if (GET_GPIO(WE))
+				writeDataToMem(getAddress());
+			else
+				readDataFromMem(getAddress());
 		}
 	}
 
