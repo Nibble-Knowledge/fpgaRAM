@@ -119,5 +119,12 @@ int readBin(const char*, uint16_t);
 
 void setup_io(void);
 
+void initGPIOs(void);
+
+int readWE(void);
+
+unsigned int readAddress(void);
+
+
 
 #endif
