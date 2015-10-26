@@ -125,6 +125,9 @@ int readWE(void);
 
 unsigned int readAddress(void);
 
+void readDataFromMem(uint16_t);
+
+void writeDataToMem(uint16_t);
 
 
 #endif
