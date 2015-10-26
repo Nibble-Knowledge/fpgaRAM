@@ -123,7 +123,7 @@ void initGPIOs(void);
 
 int readWE(void);
 
-unsigned int readAddress(void);
+uint16_t readAddress(void);
 
 void readDataFromMem(uint16_t);
 
