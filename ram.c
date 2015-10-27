@@ -31,7 +31,7 @@ int main(void){
 
 	pthread_create(&tid, NULL, memThread, NULL);
 
-//	if(fork()){
+
 
 	while(run){
 
@@ -46,6 +46,7 @@ int main(void){
 		}
 		else if(!strcmp(op_code, "~pm")){
 			printMem(instAddr, topAddr);
+			printf("Current Address: %hu\n", readAddress());
 		}
 		else if(!strcmp(op_code, "~rm")){
 			freeMem();
@@ -63,24 +64,6 @@ int main(void){
 
 
 	}
-//	}
-
-//	else{
-
-//		while(1){
-		//	puts("reading...");
-//			if (GET_GPIO(WE)){
-		//		printf("WE = 1 Address %hu", readAddress());
-//				writeDataToMem(readAddress());
-			//	sleep(5);
-//			}
-//			else{
-//				readDataFromMem(readAddress());
-		//		printf("WE = 0 Address %hu", readAddress());
-		//		sleep(5);
-//			}
-//		}
-//	}
 
 }
 
@@ -89,7 +72,7 @@ int main(void){
 void* memThread(void* input){
 
 	while(1){
-		if(GET_GPIO(WE)){
+		if(!GET_GPIO(WE)){
 			writeDataToMem(readAddress());
 		}
 		else
