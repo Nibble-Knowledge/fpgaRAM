@@ -151,6 +151,9 @@ void readDataFromMem(uint16_t);
 
 void writeDataToMem(uint16_t);
 
+//ram.c prototypes
 void* memThread(void*);
+
+
 
 #endif
