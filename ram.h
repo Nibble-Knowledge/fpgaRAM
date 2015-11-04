@@ -154,6 +154,13 @@ void writeDataToMem(uint16_t);
 //ram.c prototypes
 void* memThread(void*);
 
+void readRAMChip(void);
+
+void writeRAMChip(void);
+
+void setDataLines(nibble);
+
+void setAddressLines(int);
 
 
 #endif
