@@ -23,13 +23,18 @@ int main(void){
 	char in[100];
 
 	puts("Initializing memory");
+	puts("Usage:\n ~pm lower upper : prints memor from lower to upper");
+	puts("~rm : resets memory");
+	puts("~in : import file into memory");
+	puts("~q : quit");
+	
+	//setup
 	setup_io();
 	initGPIOs();
 	initMem();
 
-	pthread_t tid;
-
-	pthread_create(&tid, NULL, memThread, NULL);
+	//pthread_t tid;
+	//pthread_create(&tid, NULL, memThread, NULL);
 
 
 
@@ -61,6 +66,7 @@ int main(void){
                         	puts("Could not open file");
 			}
 		}
+		
 
 
 	}
