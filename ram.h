@@ -89,7 +89,7 @@ typedef struct _nibble{
 
 // Global Variables
 
-//extern static nibble*	MAINMEM;
+extern  nibble*	MAINMEM;
 
 extern int  mem_fd;
 extern void *gpio_map;
