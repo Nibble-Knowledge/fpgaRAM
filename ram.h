@@ -74,10 +74,10 @@
 
 #define WE 25
 
-#define D0 14
-#define D1 15
-#define D2 18
-#define D3 23
+#define D0 23
+#define D1 24
+#define D2 12
+#define D3 16
 
 
 

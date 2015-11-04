@@ -72,11 +72,11 @@ int main(void){
 void* memThread(void* input){
 
 	while(1){
-		if(!GET_GPIO(WE)){
-			writeDataToMem(readAddress());
+		if(GET_GPIO(WE)){
+			readDataFromMem(readAddress());
 		}
 		else
-			readDataFromMem(readAddress());
+			writeDataToMem(readAddress());
 	}
 
 
