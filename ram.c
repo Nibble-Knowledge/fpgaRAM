@@ -26,12 +26,16 @@ int main(void){
 	puts("Usage:\n ~pm lower upper : prints memor from lower to upper");
 	puts("~rm : resets memory");
 	puts("~in : import file into memory");
+	puts("~rr : reads current RAM into MEM");
+	puts("~wr : writes current MEM to the RAM chip");
 	puts("~q : quit");
 	
 	//setup
 	setup_io();
 	initGPIOs();
 	initMem();
+
+	GPIO_SET = 1 << WE;
 
 	//UNCOMMENT FOR PI AS RAM
 	//pthread_t tid;
@@ -67,10 +71,25 @@ int main(void){
                         	puts("Could not open file");
 			}
 		}
-		
+		else if(!strcmp(op_code, "~wr")){
+
+			writeRAMChip();
+		}
+		else if(!strcmp(op_code, "~rr")){
+			readRAMChip(instAddr);
+		}
+		else if(~strcmp(op_code, "~off")){
+			initGPIOs();
+		}
 
 
 	}
+
+}
+
+
+void checkMEM(){
+
 
 }
 
@@ -207,7 +226,7 @@ void writeRAMChip(void){
 		GPIO_CLR = 1 << WE;
 		sleep(0.1);
 		GPIO_SET = 1 << WE;
-		
+		sleep(0.1);
 	}
 	
 	puts("\nFinished writing MEM to RAM");

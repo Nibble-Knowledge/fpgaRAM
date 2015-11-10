@@ -2,6 +2,8 @@
 #include "ram.h"
 
 nibble *MAINMEM = NULL;
+nibble *SECONDMEM = NULL;
+
 
 // Initailize Memory Function
 int initMem(void)
@@ -9,10 +11,18 @@ int initMem(void)
 	MAINMEM = (nibble*)calloc(MEMSIZE, sizeof(nibble));
 	if (MAINMEM != NULL)
 	{
-		setBoot();
+		setBoot(MAINMEM);
 		printf("Memory Initialized\n");
 		return 1;
 	}
+        SECONDMEM = (nibble*)calloc(MEMSIZE, sizeof(nibble));
+        if (SECONDMEM != NULL)
+        {
+                setBoot(SECONDMEM);
+                printf("Secondary Memory Initialized\n");
+                return 1;
+        }
+
 
 	return -1;
 }
@@ -85,9 +95,9 @@ void freeMem(void)
 }
 
 
-void setBoot(void){
+void setBoot(nibble * mem){
 	for(int i = 0; i < 16; i++){
-		MAINMEM[i+IOMEM].data = i;
+		mem[i+IOMEM].data = i;
 	}
 
 }
