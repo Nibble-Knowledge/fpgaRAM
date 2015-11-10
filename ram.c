@@ -18,18 +18,20 @@ int main(void){
 	uint16_t instAddr;
 	uint16_t topAddr;
 	uint16_t baseAddr;
+	uint16_t mem;
 	int run = 1;
 	char fileName[100];
 	char in[100];
 
 	puts("Initializing memory");
-	puts("Usage:\n ~pm lower upper : prints memor from lower to upper");
+	puts("Usage:\n ~pm lower upper : prints memor from lower to upper, <mem> = 1 for secondary");
 	puts("~rm : resets memory");
 	puts("~in : import file into memory");
 	puts("~wr : writes current MEM to the RAM chip");
-	puts("~rr : reads current RAM into MEM");
+	puts("~rr <mem> : reads current RAM into MEM, reads into secondary mem if <mem> = 1");
+	puts("~cm : checks secondary memory to main memory");
 	puts("~q : quit");
-	
+
 	//setup
 	setup_io();
 	initGPIOs();
@@ -47,7 +49,7 @@ int main(void){
 
 		printf("Input: ");
 		fgets(in, 99, stdin);
-		sscanf(in, "%s %hu %hu", op_code, &instAddr, &topAddr);
+		sscanf(in, "%s %hu %hu %hu", op_code, &instAddr, &topAddr, &mem);
 
 		//Process input
 		if(!strcmp(op_code, "~q")){
@@ -55,7 +57,7 @@ int main(void){
 			run = 0;
 		}
 		else if(!strcmp(op_code, "~pm")){
-			printMem(instAddr, topAddr);
+			printMem(instAddr, topAddr, mem);
 			printf("Current Address: %hu\n", readAddress());
 		}
 		else if(!strcmp(op_code, "~rm")){
@@ -72,15 +74,19 @@ int main(void){
 			}
 		}
 		else if(!strcmp(op_code, "~wr")){
+			printf("Writing current MEM to RAM...\n");
 			writeRAMChip();
 		}
 		else if(!strcmp(op_code, "~rr")){
+			printf("Reading RAM into Memory\n");
 			readRAMChip(instAddr);
 		}
-		else if(~strcmp(op_code, "~off")){
+		else if(!strcmp(op_code, "~off")){
 			initGPIOs();
 		}
-
+		else if(!strcmp(op_code, "~cm")){
+			checkMEM(instAddr);
+		}
 
 
 	}
@@ -88,8 +94,21 @@ int main(void){
 }
 
 
-void checkMEM(){
+void checkMEM(int to){
+	if(to == 0)
+		to = 65536;
 
+	int counter = 0;
+	puts("CHECKING FOR ERRORS");
+	for(int i = 0; i < to; i++){
+		if(MAINMEM[i].data != SECONDMEM[i].data){
+			counter++;
+			printf("Error at address: %d. %d was suppose to be %d\n", i, SECONDMEM[i].data, MAINMEM[i].data);
+		}
+	}
+
+
+	printf("There were %d errors in memory\n", counter);
 
 }
 
@@ -109,12 +128,10 @@ void* memThread(void* input){
 }
 
 
-void readRAMChip(void){
-	freeMem();
-	initMem();
-	
+void readRAMChip(int mem){
+
 	printf("WARNING: Memory being overwritten!\n\nReading RAM chip...");
-	
+
 	//Set address lines and WE to output
 	OUT_GPIO(WE);
 	OUT_GPIO(A0);
@@ -146,12 +163,10 @@ void readRAMChip(void){
 	nibble temp;
 	
 	for(int  i = 0; i < 65536; i++){
-		if((i % 1000) == 0)
-			printf(".");
 		
 		setAddressLines(i);
 		
-		sleep(0.1);
+		usleep(10);
 		
 		
 		//Read Data and put in MEM
@@ -171,21 +186,24 @@ void readRAMChip(void){
 			temp.data |= 0x8;
 		else
 			temp.data &= 0xFFF7;
-			
-		MAINMEM[i] = temp;
-		
-		sleep(0.1);
-			
+
+
+		if(mem == 1)
+			SECONDMEM[i] = temp;
+		else
+			MAINMEM[i] = temp;
+
+		usleep(10);
+
 	}
-	
+
 	puts("\nFinished reading ram chip into MEM");
-	
-	
+
+
 }
 
 
 void writeRAMChip(void){
-	printf("Writing current MEM to RAM...");
 	
 	//Set address lines and WE to output
 	OUT_GPIO(WE);
@@ -213,20 +231,20 @@ void writeRAMChip(void){
 	nibble temp;
 	
 	for(int i = 0; i < 65536; i++){
-		if((i % 1000) == 0)
-			printf(".");
-		
+
 		//Set ouputs
 		setAddressLines(i);
 		temp = MAINMEM[i];
-		setDataLines(temp);
-		sleep(0.1);
+
+		usleep(10);
 		
 		//Write output
 		GPIO_CLR = 1 << WE;
-		sleep(0.1);
+		usleep(10);
+		setDataLines(temp);
+		usleep(10);
 		GPIO_SET = 1 << WE;
-		sleep(0.1);
+		usleep(10);
 	}
 	
 	puts("\nFinished writing MEM to RAM");
@@ -352,7 +370,7 @@ void setAddressLines(int i){
 		GPIO_CLR = 1 << A14;
 	}
 	if(i & 0x8000){
-		GPIO_SET = 1 << A15;	
+		GPIO_SET = 1 << A15;
 	}
 	else{
 		GPIO_CLR = 1 << A15;

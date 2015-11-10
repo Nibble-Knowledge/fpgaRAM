@@ -90,6 +90,7 @@ typedef struct _nibble{
 // Global Variables
 
 extern  nibble*	MAINMEM;
+extern nibble* SECONDMEM;
 
 extern int  mem_fd;
 extern void *gpio_map;
@@ -112,13 +113,13 @@ nibble readMem(uint16_t);
 void writeMem(nibble data, uint16_t address);
 
 //Prints all of Memory
-void printMem(uint16_t, uint16_t);
+void printMem(uint16_t, uint16_t, int);
 
 //Frees Memory allocation
 void freeMem(void);
 
 //Sets data table values for 1 to 15
-void setBoot(void);
+void setBoot(nibble*);
 
 
 
@@ -154,7 +155,7 @@ void writeDataToMem(uint16_t);
 //ram.c prototypes
 void* memThread(void*);
 
-void readRAMChip(void);
+void readRAMChip(int);
 
 void writeRAMChip(void);
 
@@ -162,5 +163,6 @@ void setDataLines(nibble);
 
 void setAddressLines(int);
 
+void checkMEM(int);
 
 #endif

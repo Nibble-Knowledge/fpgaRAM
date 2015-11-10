@@ -13,8 +13,8 @@ int initMem(void)
 	{
 		setBoot(MAINMEM);
 		printf("Memory Initialized\n");
-		return 1;
 	}
+
         SECONDMEM = (nibble*)calloc(MEMSIZE, sizeof(nibble));
         if (SECONDMEM != NULL)
         {
@@ -28,11 +28,16 @@ int initMem(void)
 }
 
 // Print all of Memory
-void printMem(uint16_t lower, uint16_t upper)
+void printMem(uint16_t lower, uint16_t upper, int mem)
 {
+	nibble* memory;
+	if(mem == 1)
+		memory = SECONDMEM;
+	else
+		memory = MAINMEM;
 
 
-	if(MAINMEM == NULL)
+	if(memory == NULL)
 	{
 		puts("No allocated memory");
 		return;
@@ -41,7 +46,7 @@ void printMem(uint16_t lower, uint16_t upper)
 	puts("Memory contents: ");
 	for(int i = lower; i < upper ; i++)
 	{
-		printf("%s: %s", tobitstr(MEMADDRSIZE, i, PLATEND), tobitstr(MEMMODSIZE, MAINMEM[i].data, PLATEND));
+		printf("%s: %s", tobitstr(MEMADDRSIZE, i, PLATEND), tobitstr(MEMMODSIZE, memory[i].data, PLATEND));
 
 		if(i < IOMEM && IOMEM > 0) 
 		{
