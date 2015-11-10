@@ -26,8 +26,8 @@ int main(void){
 	puts("Usage:\n ~pm lower upper : prints memor from lower to upper");
 	puts("~rm : resets memory");
 	puts("~in : import file into memory");
-	puts("~rr : reads current RAM into MEM");
 	puts("~wr : writes current MEM to the RAM chip");
+	puts("~rr : reads current RAM into MEM");
 	puts("~q : quit");
 	
 	//setup
@@ -72,7 +72,6 @@ int main(void){
 			}
 		}
 		else if(!strcmp(op_code, "~wr")){
-
 			writeRAMChip();
 		}
 		else if(!strcmp(op_code, "~rr")){
@@ -81,6 +80,7 @@ int main(void){
 		else if(~strcmp(op_code, "~off")){
 			initGPIOs();
 		}
+
 
 
 	}
